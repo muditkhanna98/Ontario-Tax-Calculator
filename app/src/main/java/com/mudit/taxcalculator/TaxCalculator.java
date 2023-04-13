@@ -61,7 +61,11 @@ public class TaxCalculator {
             for (int i = 0; i < surtaxRates.length; i++) {
                 double surtaxIncome = baseTax * surtaxRates[i];
                 if (income > surtaxIncome) {
-                    surtax += surtaxIncome * (surtaxRates[i] - surtaxRates[i - 1]);
+                    if (i == 0) {
+                        surtax += surtaxIncome * (surtaxRates[i]);
+                    } else {
+                        surtax += surtaxIncome * (surtaxRates[i] - surtaxRates[i - 1]);
+                    }
                 } else {
                     surtax += (income - baseTax) * (surtaxRates[i] - surtaxRates[i - 1]);
                     break;
