@@ -25,11 +25,13 @@ public class TaxCalculator {
         double taxableIncome = income - rrsp;
         double ontarioTax = 0.0;
         for (int i = 0; i < ontarioBrackets.length; i++) {
-            if (taxableIncome > ontarioBrackets[i]) {
-                double incomeInBracket = Math.min(taxableIncome - ontarioBrackets[i], ontarioBrackets[i + 1] - ontarioBrackets[i]);
+            if (i == ontarioBrackets.length - 1 || taxableIncome <= ontarioBrackets[i + 1]) {
+                double incomeInBracket = taxableIncome - ontarioBrackets[i];
                 ontarioTax += incomeInBracket * ontarioRates[i];
-            } else {
                 break;
+            } else {
+                double incomeInBracket = ontarioBrackets[i + 1] - ontarioBrackets[i];
+                ontarioTax += incomeInBracket * ontarioRates[i];
             }
         }
         return ontarioTax;

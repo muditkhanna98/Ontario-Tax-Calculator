@@ -49,8 +49,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // Calculate the RRSP deduction based on the SeekBar progress
+                Double income = Double.parseDouble(incomeEditText.getText().toString());
                 rrspMultiplier = (double) progress / 1000.0;
-                rrspDeduction = rrspMultiplier * 27230;
+                if (income < 27230) {
+                    rrspMultiplier = (double) progress / 1000.0;
+                    rrspDeduction = rrspMultiplier * income;
+                } else {
+
+                    rrspDeduction = rrspMultiplier * 27230;
+                }
                 updateTaxOutput(rrspDeduction, rrspMultiplier);
             }
 
@@ -104,8 +111,12 @@ public class MainActivity extends AppCompatActivity {
         surtaxTextView.setText(surtax);
         rrspContributionTv.setText(rrspDeduction);
 
-        String[] multiplierArr = multiplier.split(":");
-        int progValue = (int) (Double.parseDouble(multiplierArr[1].trim()) * 1000);
-        rrspSeekBar.setProgress(progValue, true);
+        if (multiplier != "RRSP Multiplier: ") {
+            String[] multiplierArr = multiplier.split(":");
+            int progValue = (int) (Double.parseDouble(multiplierArr[1].trim()) * 1000);
+            rrspSeekBar.setProgress(progValue, true);
+        } else {
+            rrspSeekBar.setProgress(0, true);
+        }
     }
 }
